@@ -5,28 +5,28 @@ let hours = 0;
 let interval;
 
 function init () {
-    watch();
-    interval = setInterval(watch, 1000);
+    if (!interval) {
+        watch();
+        interval = setInterval(watch, 1000);
+    }
 }
 
 const pause = () => {
     clearInterval(interval);
-    
+    interval = null;
 }
 
 const clearAll = () => {
     clearInterval(interval);
+    interval = null;
     seconds = 0;
     minutes = 0;
-    watchDocument.innerHTML = '00:00:00'
+    hours = 0;
+    updateDisplay();
 }
 
 const digitZero = (digit) => {
-    if (digit < 10) {
-        return `0${digit}`;
-    }else {
-        return digit;
-    }
+    return digit < 10 ? `0${digit}` : digit ;
 }
 
 function watch () {
@@ -42,5 +42,12 @@ function watch () {
         minutes = 0;
     }
 
+    updateDisplay();
+
+   
+}
+
+function updateDisplay () {
     watchDocument.innerHTML = digitZero(hours) + ":" + digitZero(minutes) + ":" + digitZero(seconds);
+
 }
